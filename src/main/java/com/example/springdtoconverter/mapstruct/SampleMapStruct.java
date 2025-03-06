@@ -7,9 +7,13 @@ import com.example.springdtoconverter.common.sample.entity.SampleEntity;
 import com.example.springdtoconverter.mapstruct.config.MapStrcutConfig;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(config = MapStrcutConfig.class)
 public interface SampleMapStruct {
     SampleSelectDto toDto(SampleEntity entity);
+
+    List<SampleSelectDto> toDto(List<SampleEntity> entities);
 
     SampleEntity toEntity(SampleInsertDto dto);
 

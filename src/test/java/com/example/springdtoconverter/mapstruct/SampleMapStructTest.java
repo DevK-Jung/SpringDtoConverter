@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -80,5 +83,33 @@ class SampleMapStructTest {
 
         // Update DTO에는 `title`이 없으므로, 변환 후에는 `title`이 null일 수 있음.
         assertThat(updatedEntity.getTitle()).isNull();
+    }
+
+    @Test
+    void testToDtoList() {
+        // Given (Entity 리스트 생성)
+        SampleEntity entity1 = new SampleEntity();
+        entity1.setId(1L);
+        entity1.setTitle("Title 1");
+        entity1.setContent("Content 1");
+        entity1.setUseYn(true);
+
+        SampleEntity entity2 = new SampleEntity();
+        entity2.setId(2L);
+        entity2.setTitle("Title 2");
+        entity2.setContent("Content 2");
+        entity2.setUseYn(false);
+
+        List<SampleEntity> entityList = Arrays.asList(entity1, entity2);
+
+        // When (Entity 리스트 → DTO 리스트 변환)
+        List<SampleSelectDto> dtoList = mapper.toDto(entityList);
+
+        // Then (검증)
+        assertThat(dtoList).isNotNull().hasSize(2);
+        assertThat(dtoList.get(0).getId()).isEqualTo(entity1.getId());
+        assertThat(dtoList.get(1).getId()).isEqualTo(entity2.getId());
+        assertThat(dtoList.get(0).getTitle()).isEqualTo(entity1.getTitle());
+        assertThat(dtoList.get(1).getTitle()).isEqualTo(entity2.getTitle());
     }
 }
